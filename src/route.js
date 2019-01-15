@@ -13,8 +13,10 @@ router.get('/task', async (req, res) => {
 });
 
 router.post('/task', async function(req, res) {
-  let task_id = "12345678";
-  await tasks.run_task();
+  let uuid = req.body.deviceUUID;
+  let payload = req.body.payload;
+
+  let task_id = await tasks.run_task(uuid, payload);
 
   res.send(task_id);
 });
