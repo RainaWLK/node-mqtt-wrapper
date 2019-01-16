@@ -34,6 +34,7 @@ client.on("message", async (topic, message, packet) => {
     if(task_array[topic] !== undefined) {
       let task_id = task_array[topic];
       await Redis.client.lpush(task_id, JSON.stringify(payload));
+      await Redis.client.expire(task_id, 180);
       console.log('push into redis ok: ' + task_id);
 
       delete task_array[topic];
