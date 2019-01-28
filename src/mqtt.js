@@ -11,13 +11,30 @@ const client = MQTT.connect(`mqtt://${ENV.env.MQTT_BROKER}:${ENV.env.MQTT_PORT}`
   password: ENV.env.MQTT_PASSWORD
 });
  
-client.on("connect", () => {
-  console.log('mqtt connected')
+client.on("connect", (connack) => {
+  console.log('mqtt client connected');
+  console.log(connack);
+});
+
+client.on("reconnect", () => {
+  console.log('mqtt client reconnecting')
 });
 
 client.on("error", (err) => {
-  console.error('mqtt connect error');
+  console.error('mqtt client error');
   console.error(err);
+});
+
+client.on("close", () => {
+  console.log('mqtt client closed')
+});
+
+client.on("offline", () => {
+  console.log('mqtt client offline')
+});
+
+client.on("end", () => {
+  console.log('mqtt clinet end')
 });
 
 client.on("message", async (topic, message, packet) => {
